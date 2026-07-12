@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дмитрий и Анна | Свадьба</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* СБРОС И БАЗОВЫЕ СТИЛИ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f9f7f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .main-container {
+            max-width: 600px; /* Ограничиваем ширину для красоты на компе, на телефоне будет 100% */
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+        .block-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* БЛОК 6: ТАЙМЕР И КНОПКА */
+        .rsvp-block {
+            background-color: #fff;
+            padding: 40px 20px 50px 20px;
+            text-align: center;
+        }
+        .rsvp-title {
+            font-family: 'Playfair Display', serif;
+            color: #999;
+            font-size: 18px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .timer-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .timer-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 48px;
+            font-weight: 300;
+            color: #b3a5a5;
+            line-height: 1;
+        }
+        .timer-label {
+            font-size: 14px;
+            color: #999;
+            margin-top: 5px;
+            font-weight: 300;
+        }
+        
+        /* КНОПКА */
+        .rsvp-btn {
+            display: inline-block;
+            padding: 16px 50px;
+            background-color: #e8e6e6;
+            color: #555;
+            text-decoration: none;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            letter-spacing: 2px;
+            transition: background 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
+        }
+        .rsvp-btn:hover {
+            background-color: #dcdada;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        /* ПОДПИСЬ */
+        .signature {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 22px;
+            color: #333;
+        }
+        
+        /* АДАПТИВ (на всякий случай) */
+        @media (max-width: 480px) {
+            .timer-number { font-size: 38px; }
+            .rsvp-btn { padding: 14px 30px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <!-- БЛОКИ 1-5 (КАРТИНКИ) -->
+        <img src="01.jpg" alt="Обложка" class="block-img">
+        <img src="02.jpg" alt="Приветствие" class="block-img">
+        <img src="03.jpg" alt="Локации" class="block-img">
+        <img src="04.jpg" alt="Подарки" class="block-img">
+        <img src="05.jpg" alt="Дресс-код" class="block-img">
+
+        <!-- БЛОК 6: ЖИВОЙ ТАЙМЕР И КНОПКА -->
+        <div class="rsvp-block">
+            <div class="rsvp-title">До свадьбы осталось:</div>
+            <div class="timer-container" id="timer">
+                <div class="timer-item">
+                    <div class="timer-number" id="days">00</div>
+                    <div class="timer-label">дней</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-number" id="hours">00</div>
+                    <div class="timer-label">часов</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-number" id="minutes">00</div>
+                    <div class="timer-label">минут</div>
+                </div>
+            </div>
+
+            <!-- СЮДА ВСТАВЬ ССЫЛКУ НА ГУГЛ/ЯНДЕКС ФОРМУ -->
+            <a href="ССЫЛКА_НА_ФОРМУ" class="rsvp-btn" target="_blank">ПОДТВЕРДИТЬ УЧАСТИЕ</a>
+
+            <div class="signature">С любовью, Дмитрий и Анна</div>
+        </div>
+
+    </div>
+
+    <!-- СКРИПТ ТАЙМЕРА -->
+    <script>
+        // УСТАНОВИ ДАТУ СВАДЬБЫ (Год, Месяц (от 0 до 11), День, Часы, Минуты)
+        // Пример: 14 сентября 2026, 17:00
+        const weddingDate = new Date(2026, 8, 14, 17, 0, 0).getTime();
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const timeLeft = weddingDate - now;
+
+            if (timeLeft < 0) {
+                document.getElementById('timer').innerHTML = "<h3 style='color:#999;'>Свадьба уже была!</h3>";
+                return;
+            }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+            document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    </script>
+
+</body>
+</html>
